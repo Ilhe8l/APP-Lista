@@ -1,0 +1,1 @@
+Este repositório contém o código-fonte de uma aplicação Android desenvolvida como parte da disciplina de Dispositivos Móveis, ministrada pelo Professor Daniel Ribeiro Trindade. A aplicação tem como objetivo criar uma lista de itens, onde o usuário pode cadastrar novos itens, incluindo uma imagem da galeria do celular, título e descrição.
