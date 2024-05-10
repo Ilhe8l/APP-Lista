@@ -17,10 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import souza.guilherme.lista.R;
+import souza.guilherme.lista.model.NewItemActivityViewModel;
 
 public class NewItemActivity extends AppCompatActivity {
 
@@ -46,6 +48,14 @@ public class NewItemActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
+
+        Uri selectPhotoLocation = vm.getSelectPhotoLocation();
+        if(selectPhotoLocation != null){
+            ImageView imvphotoPreview = findViewById(R.id.imvPhotoPreview);
+            imvphotoPreview.setImageURI(selectPhotoLocation);
+        }
 
         // Obtém o botão imgCl, responsável pela seleção de fotos
         ImageButton imgCl = findViewById(R.id.imbCl);
@@ -118,10 +128,13 @@ public class NewItemActivity extends AppCompatActivity {
             // Verifica se a operação foi bem sucedida
             if(resultCode == Activity.RESULT_OK){
                 // Obtém o URI da foto selecionada
-                photoSelected = data.getData();
+                Uri photoSelected = data.getData();
                 // Exibe a foto selecionada no ImageView de pré-visualização
                 ImageView imvfotoPreview = findViewById(R.id.imvPhotoPreview);
                 imvfotoPreview.setImageURI(photoSelected);
+
+                NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
+                vm.setSelectPhotoLocation(photoSelected);
             }
         }
     }

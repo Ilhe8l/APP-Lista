@@ -2,6 +2,8 @@ package souza.guilherme.lista.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,18 +13,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import souza.guilherme.lista.R;
 import souza.guilherme.lista.adapter.MyAdapter;
+import souza.guilherme.lista.model.MainActivityViewModel;
 import souza.guilherme.lista.model.MyItem;
+import souza.guilherme.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
         // Obtém a referência para o RecyclerView responsável por exibir os itens
         RecyclerView rvItens = findViewById(R.id.rvItens);
 
+        MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        List<MyItem> itens = vm.getItens();
+
         // Cria e configura o adaptador para o RecyclerView
         myAdapter = new MyAdapter(this, itens);
         rvItens.setAdapter(myAdapter);
@@ -94,7 +103,18 @@ public class MainActivity extends AppCompatActivity {
                 MyItem myItem = new MyItem();
                 myItem.title = data.getStringExtra("title");
                 myItem.description = data.getStringExtra("description");
-                myItem.photo = data.getData();
+                Uri selectedPhotoUri = data.getData();
+
+                try{
+                    Bitmap photo = Util.getBitmap(MainActivity.this, selectedPhotoUri, 100, 100);
+                    myItem.photo = photo;
+                } catch (FileNotFoundException e){
+                    e.printStackTrace();
+                }
+
+                MainActivityViewModel vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
+                List<MyItem> itens = vm.getItens();
+
                 // Adiciona o novo item à lista
                 itens.add(myItem);
                 // Notifica o adaptador que um novo item foi inserido

@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
