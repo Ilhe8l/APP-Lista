@@ -29,8 +29,6 @@ public class NewItemActivity extends AppCompatActivity {
     // Declaração da constante para identificar a solicitação de seleção de foto da galeria
     static int PHOTO_PICKER_REQUEST = 1;
 
-    // Variável para armazenar o URI da foto, selecionada inicialmente como nulo
-    Uri photoSelected = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +73,11 @@ public class NewItemActivity extends AppCompatActivity {
 
         // Obtém o botão de adicionar item
         Button btnAddItem = findViewById(R.id.btnAddItem);
-
         // Define o comportamento do botão de adicionar item ao ser clicado
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Uri photoSelected = vm.getSelectPhotoLocation();
                 // Verifica se uma foto foi selecionada
                 if(photoSelected == null){
                     // Se não, exibe uma mensagem de erro
